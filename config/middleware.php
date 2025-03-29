@@ -6,9 +6,10 @@
 
 use App\Middleware\AdminMiddleware;
 use App\Middleware\MaintenanceMiddleware;
+use App\Middleware\RateLimitMiddleware;
 
 return [
-    '/' => [MaintenanceMiddleware::class],
+    '/' => [MaintenanceMiddleware::class, RateLimitMiddleware::class],
 
     '/admin' => [AdminMiddleware::class],
   

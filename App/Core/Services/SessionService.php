@@ -1,8 +1,11 @@
-<?php 
+<?php
+
 namespace App\Core\Services;
 
-class SessionService {
-    public static function startSession() {
+class SessionService
+{
+    public static function startSession()
+    {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
             error_log("Sessione avviata.");
@@ -11,22 +14,31 @@ class SessionService {
         error_log("Sessione già avviata.");
         return false;
     }
-    
 
-    public static function verifyTimeFlashSession() {
+    public static function has($key): bool
+    {
+        return isset($_SESSION[$key]);
+    }
+
+
+
+    public static function verifyTimeFlashSession()
+    {
         self::startSession();
         if (isset($_SESSION['TIME']) && (time() - $_SESSION['TIME']) > 0) {
             self::flashSessionDestroy();
         }
     }
 
-    public static function set($key, $value) {
+    public static function set($key, $value)
+    {
         self::startSession();
         $_SESSION[$key] = $value;
         return self::getAll();
     }
 
-    public static function create(array $arraySession) {
+    public static function create(array $arraySession)
+    {
         self::startSession();
         foreach ($arraySession as $key => $value) {
             $_SESSION[$key] = $value;
@@ -34,23 +46,27 @@ class SessionService {
         return self::getAll();
     }
 
-    public static function getAll() {
+    public static function getAll()
+    {
         self::startSession();
         return $_SESSION ?? null;
     }
 
-    public static function get(string $key) {
+    public static function get(string $key)
+    {
         self::startSession();
         return $_SESSION[$key] ?? null;
     }
 
-    public static function unset($key) {
+    public static function unset($key)
+    {
         self::startSession();
         unset($_SESSION[$key]);
         return self::getAll() ?? null;
     }
 
-    public static function setFlashSession($key, $value) {
+    public static function setFlashSession($key, $value)
+    {
         self::startSession();
         $_SESSION['FLASH'][$key] = $value;
         $_SESSION['TIME'] = time(); // Imposta il tempo corrente
@@ -58,7 +74,13 @@ class SessionService {
         error_log("Tempo TIME impostato: " . $_SESSION['TIME']);
     }
 
-    public static function getFlashSession($key) {
+    public static function exist()
+    {
+        return session_status() === PHP_SESSION_ACTIVE;
+    }
+
+    public static function getFlashSession($key)
+    {
         self::startSession();
         $flash = $_SESSION['FLASH'][$key] ?? null;
         if ($flash !== null) {
@@ -70,17 +92,19 @@ class SessionService {
         return $flash;
     }
 
-    private static function flashSessionDestroy() {
+    private static function flashSessionDestroy()
+    {
         self::startSession();
         if (isset($_SESSION['FLASH'])) {
-            $_SESSION['FLASH'] = ''; 
+            $_SESSION['FLASH'] = '';
             unset($_SESSION['FLASH']);
             error_log("Sessione Flash distrutta.");
         }
     }
 
 
-    public static function destroy() {
+    public static function destroy()
+    {
         self::startSession();
         $_SESSION = [];
         session_unset();
@@ -88,5 +112,4 @@ class SessionService {
         error_log("Sessione completamente distrutta.");
         return session_status();
     }
-    
 }

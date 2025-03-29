@@ -127,6 +127,5 @@ Route::post('/admin/settings',MaintenanceController::class,'submit');
 
 
 
-
 // Restituisce l'array delle rotte
 return Route::all();

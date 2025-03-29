@@ -82,4 +82,5 @@ class AuthController extends Controller
 
         $this->render('Auth.login', ['message' => 'Registrazione Effettuata, Ora Iscriviti!']);
     }
+
 }

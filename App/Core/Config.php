@@ -25,7 +25,7 @@ class Config
      * @return string ritrona il parametro 
      * 
      */
-    public static function env($envFile)
+    public static function env($envFile): void
     {
     
         $envVars = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -42,7 +42,7 @@ class Config
         }
     }
 
-    public static function dir($dir)
+    public static function dir($dir): array|bool
     {
         if (!is_dir($dir)) {
             return false;
@@ -59,7 +59,7 @@ class Config
 
 
 
-    public static function updateEnv($envFile, $key, $value)
+    public static function updateEnv($envFile, $key, $value): void
     {
         $envVars = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $newEnvVars = [];

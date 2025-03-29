@@ -5,14 +5,14 @@ namespace App\Core\Services;
 use App\Model\Log;
 use App\Model\User;
 
-class AuthService
+class AuthService extends BaseUser
 {
     public static function login($email)
     {
         $user = User::where('email', $email)->first();
         
         if (!empty($user)) {
-            $token = static::generateToken();
+            $token = self::generateToekn();
             static::saveTokenToDatabase($user->id, $token);
             static::startUserSession(token: $token);
 
@@ -47,10 +47,6 @@ class AuthService
     }
 
     
-    protected static function generateToken($length = 32)
-    {
-        return bin2hex(random_bytes($length));
-    }
 
     protected static function saveTokenToDatabase($userId, $token)
     {
